@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,14 +24,22 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false, of = { "id" })
 @ToString(includeFieldNames = true)
 @Entity
 @Table(name = "product")
 @AuditTable(value = "product_audit")
-public class Product extends AbstractEntity {
+public class Product extends AbstractEntityBase {
 
 	private static final long serialVersionUID = 4353481086450410825L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+
+	@Column(name = "name", nullable = false, length = 50)
+	private String name;
 
 	@Column(name = "description", nullable = false)
 	private String description;
