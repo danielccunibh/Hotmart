@@ -1,31 +1,24 @@
 package br.com.hotmart.libs.domain;
 
-import java.io.Serializable;
-
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.envers.Audited;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 @MappedSuperclass
-public abstract class AbstractEntity implements Serializable {
-	
-	private static final long serialVersionUID = 509248274115759968L;
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@Audited
+public abstract class AbstractEntity extends AbstractEntityBase {
 
-	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	private static final long serialVersionUID = -8136560437524043493L;
 
-        AbstractEntity that = (AbstractEntity) o;
+	@Column(name = "name", nullable = false)
+	protected String name;
 
-        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
-
-    abstract Long getId();
-    
-    abstract void setId(Long id);
-    
 }
