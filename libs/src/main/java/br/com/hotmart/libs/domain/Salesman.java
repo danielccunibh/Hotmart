@@ -7,20 +7,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.dom4j.tree.AbstractEntity;
 import org.hibernate.envers.AuditTable;
 
-import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@Builder
 @EqualsAndHashCode(callSuper = false, of = { "id" })
 @ToString(includeFieldNames = true)
 @Entity
 @Table(name = "salesman")
 @AuditTable(value = "salesman_audit")
-public class Salesman extends AbstractEntity {
+@Data
+public class Salesman extends AbstractEntityBase {
 
 	private static final long serialVersionUID = 8631439815775215931L;
 

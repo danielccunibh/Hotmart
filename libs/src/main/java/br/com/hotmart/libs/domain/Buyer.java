@@ -10,20 +10,16 @@ import javax.persistence.Table;
 import org.dom4j.tree.AbstractEntity;
 import org.hibernate.envers.AuditTable;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Builder
 @EqualsAndHashCode(callSuper = false, of = { "id" })
 @ToString(includeFieldNames = true)
 @Entity
 @Table(name = "buyer")
 @AuditTable(value = "buyer_audit")
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Buyer extends AbstractEntity {
 
 	private static final long serialVersionUID = 3342223448955513258L;

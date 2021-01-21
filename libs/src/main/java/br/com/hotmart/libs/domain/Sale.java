@@ -1,5 +1,7 @@
 package br.com.hotmart.libs.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,24 +14,16 @@ import javax.persistence.Table;
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.NotAudited;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@Builder
 @EqualsAndHashCode(callSuper = false, of = { "id" })
 @ToString(includeFieldNames = true)
 @Entity
 @Table(name = "sale")
 @AuditTable(value = "sale_audit")
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Sale extends AbstractEntityBase {
 
 	private static final long serialVersionUID = 6816320349136158641L;
@@ -54,4 +48,12 @@ public class Sale extends AbstractEntityBase {
 	@NotAudited
 	private Buyer buyer;
 
+	@Column(name = "amount", nullable = false)
+	private Integer amount;
+
+	@Column(name = "evaluation")
+	private Integer evaluation;
+
+	@Column(name = "date_sale", nullable = false)
+	private Date dateSale;
 }

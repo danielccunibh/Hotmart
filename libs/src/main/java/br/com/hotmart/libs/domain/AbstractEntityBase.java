@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractEntityBase extends AbstractAuditingEntity implements Serializable {
+public abstract class AbstractEntityBase implements Serializable {
 
 	private static final long serialVersionUID = 509248274115759968L;
 

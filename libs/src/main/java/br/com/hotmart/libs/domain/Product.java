@@ -15,20 +15,16 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.envers.AuditTable;
 
-import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@Builder
 @EqualsAndHashCode(callSuper = false, of = { "id" })
 @ToString(includeFieldNames = true)
 @Entity
 @Table(name = "product")
 @AuditTable(value = "product_audit")
+@Data
 public class Product extends AbstractEntityBase {
 
 	private static final long serialVersionUID = 4353481086450410825L;
@@ -51,4 +47,5 @@ public class Product extends AbstractEntityBase {
 	@ManyToOne
 	@JoinColumn(name = "id_product_category", referencedColumnName = "id")
 	private ProductCategory productCategory;
+
 }
