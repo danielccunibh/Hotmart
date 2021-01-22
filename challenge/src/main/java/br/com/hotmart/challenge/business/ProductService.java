@@ -1,5 +1,6 @@
 package br.com.hotmart.challenge.business;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,5 +87,14 @@ public class ProductService {
 		if (StringUtils.isEmpty(p.getDescription())) {
 			throw new HotmartException("Erro ao atualizar Produto. Descrição é obrigatório.");
 		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(long id) {
+		productRepository.deleteById(id);
+	}
+
+	public ResponseEntity<List<ProductDTO>> findByCurrentDateAndSearchTerm(Date currentDate, String searchTerm) {
+		return null;
 	}
 }
