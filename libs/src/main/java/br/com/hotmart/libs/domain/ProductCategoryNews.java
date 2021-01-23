@@ -13,8 +13,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = false, of = { "id" })
@@ -22,6 +24,8 @@ import lombok.ToString;
 @Entity
 @Table(name = "product_category_news")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductCategoryNews extends AbstractEntityBase {
 
 	private static final long serialVersionUID = 4353481086450410825L;

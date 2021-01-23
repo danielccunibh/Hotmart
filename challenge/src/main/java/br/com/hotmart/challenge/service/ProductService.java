@@ -1,4 +1,4 @@
-package br.com.hotmart.challenge.business;
+package br.com.hotmart.challenge.service;
 
 import java.util.Date;
 import java.util.List;

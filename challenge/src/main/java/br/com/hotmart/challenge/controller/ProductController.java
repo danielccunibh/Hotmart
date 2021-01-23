@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.hotmart.challenge.business.ProductService;
+import br.com.hotmart.challenge.service.ProductService;
 import br.com.hotmart.libs.domain.Product;
 import br.com.hotmart.libs.dto.ProductDTO;
 
@@ -36,7 +36,7 @@ public class ProductController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-	@GetMapping(path = { "/{currentDate, searchTerm}" })
+	@GetMapping(path = { "/findByCurrentDateAndSearchTerm/{currentDate, searchTerm}" })
 	public ResponseEntity<List<ProductDTO>> findByCurrentDateAndSearchTerm(@PathVariable Date currentDate,
 			String searchTerm) {
 		return service.findByCurrentDateAndSearchTerm(currentDate, searchTerm);

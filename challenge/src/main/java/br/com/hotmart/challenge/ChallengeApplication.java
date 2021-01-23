@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.WebApplicationInitializer;
 
 @SpringBootApplication
@@ -19,6 +20,7 @@ import org.springframework.web.WebApplicationInitializer;
 @EntityScan(basePackages = "br.com.hotmart.libs.domain")
 @ConfigurationProperties("hotmart.default")
 @Configuration
+@EnableScheduling
 public class ChallengeApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
 
 	@Value("${hotmart.default.timezone}")
