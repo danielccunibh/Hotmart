@@ -1,6 +1,5 @@
 package br.com.hotmart.challenge.scheduler;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -10,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import br.com.hotmart.challenge.service.NewsApiService;
+import br.com.hotmart.challenge.service.ProductService;
 import br.com.hotmart.libs.util.DateUtil;
 
 @Component
@@ -17,23 +17,38 @@ public class ScheduledTasks {
 
 	private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
 	private Date startDate;
 
 	@Autowired
-	private NewsApiService service;
+	private NewsApiService newsApiService;
 
-	@Scheduled(fixedDelay = 500)
-	// @Scheduled(cron = "0 0 */6 ? * *")
-	public void reportCurrentTime() {
+	@Autowired
+	private ProductService productService;
+
+	@Scheduled(cron = "0 0 */6 ? * *")
+	public void updateProdctCategoryNewsJob() {
 		startDate = new Date();
-		log.info("Iniciando a pesquisa por noticias de categoria de produtos: {}", dateFormat.format(startDate));
+		log.info("Iniciando a pesquisa por noticias de categoria de produtos: {}", getDateForLog(startDate));
 
-		service.updateNewsApi();
+		newsApiService.updateNewsApi();
 
-		log.info("Concluido a pesquisa por noticias de categoria de produtos: {}", dateFormat.format(new Date()));
+		log.info("Concluido a pesquisa por noticias de categoria de produtos: {}", getDateForLog(new Date()));
 		log.info("Tempo decorrido: {}", DateUtil.getDaysBetweenDates(startDate, new Date()));
+	}
+
+	@Scheduled(cron = "0 0 1 * * ?")
+	public void updateProdctCategoryNewsJob2() {
+		startDate = new Date();
+		log.info("Iniciando o calculo de score dos produtos: {}", getDateForLog(startDate));
+
+		productService.updateScoreProduct();
+
+		log.info("Concluido o calculo de score dos produtos: {}", getDateForLog(new Date()));
+		log.info("Tempo decorrido: {}", DateUtil.getDaysBetweenDates(startDate, new Date()));
+	}
+
+	private String getDateForLog(Date date) {
+		return DateUtil.getDateFormated(date, DateUtil.HHMMSS);
 	}
 
 }

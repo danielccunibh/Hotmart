@@ -1,10 +1,15 @@
 package br.com.hotmart.libs.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class DateUtil {
+
+	public static final String DDMMYYY = "dd/MM/yyyy";
+
+	public static final String HHMMSS = "HH:mm:ss";
 
 	public static long getDaysBetweenDates(final Date d1, final Date d2) {
 		final long diffTimeMilis = d2.getTime() - d1.getTime();
@@ -34,6 +39,11 @@ public class DateUtil {
 		cal.set(Calendar.MILLISECOND, 999);
 
 		return cal.getTime();
+	}
+
+	public static String getDateFormated(Date date, String pattern) {
+		return new SimpleDateFormat(pattern).format(date);
+
 	}
 
 }

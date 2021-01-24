@@ -48,4 +48,7 @@ public class Product extends AbstractEntityBase {
 	@JoinColumn(name = "id_product_category", referencedColumnName = "id")
 	private ProductCategory productCategory;
 
+	@Column(name = "score")
+	private int score = 0;
+
 }

@@ -1,11 +1,18 @@
 package br.com.hotmart.challenge.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +26,7 @@ import br.com.hotmart.libs.repository.ProductCategoryRepository;
 import br.com.hotmart.libs.repository.ProductRepository;
 
 @Service
+@CacheConfig(cacheNames = "hotmart")
 public class ProductService {
 
 	@Autowired
@@ -27,6 +35,7 @@ public class ProductService {
 	@Autowired
 	private ProductCategoryRepository productCategoryRepository;
 
+	@Cacheable
 	public List<Product> findAll() {
 		return (List<Product>) productRepository.findAll();
 	}
@@ -94,7 +103,30 @@ public class ProductService {
 		productRepository.deleteById(id);
 	}
 
-	public ResponseEntity<List<ProductDTO>> findByCurrentDateAndSearchTerm(Date currentDate, String searchTerm) {
-		return null;
+	@Cacheable
+	public List<ProductDTO> findByCurrentDateAndSearchTerm(Date currentDate, String searchTerm, int page, int size) {
+		Pageable pageable = getPageable(page, size);
+
+		Page<Product> products = productRepository.findAll(pageable);
+
+		List<ProductDTO> result = new ArrayList<>();
+
+		products.get().forEach(p ->
+
+		result.add(ProductDTO.builder().id(p.getId()).name(p.getName()).description(p.getDescription())
+				.creationDate(p.getCreationDate()).score(p.getScore()).build())
+
+		);
+
+		return result;
+	}
+
+	private Pageable getPageable(int page, int size) {
+		return PageRequest.of(page, size, Sort.by("score").descending().and(Sort.by("name")).ascending()
+				.and(Sort.by("productCategory.name")).ascending());
+	}
+
+	public void updateScoreProduct() {
+
 	}
 }

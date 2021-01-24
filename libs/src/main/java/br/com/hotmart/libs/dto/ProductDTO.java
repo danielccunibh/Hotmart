@@ -3,13 +3,15 @@ package br.com.hotmart.libs.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = false, of = { "id" })
-@ToString(includeFieldNames = true)
+@ToString(includeFieldNames = true, exclude = { "nameProductCategory", "idProductCategory" })
 @Data
+@Builder
 public class ProductDTO implements Serializable {
 
 	private static final long serialVersionUID = 7969040427181177656L;
@@ -21,6 +23,8 @@ public class ProductDTO implements Serializable {
 	private String description;
 
 	private Date creationDate;
+
+	private int score;
 
 	private String nameProductCategory;
 
