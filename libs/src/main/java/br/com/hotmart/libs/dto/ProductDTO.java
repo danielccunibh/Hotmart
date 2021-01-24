@@ -28,7 +28,7 @@ public class ProductDTO implements Serializable {
 
 	private Date creationDate;
 
-	private int score;
+	private double score;
 
 	private String nameProductCategory;
 
