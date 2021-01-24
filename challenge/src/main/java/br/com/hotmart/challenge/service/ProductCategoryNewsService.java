@@ -1,19 +1,24 @@
 package br.com.hotmart.challenge.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.hotmart.libs.domain.ProductCategory;
 import br.com.hotmart.libs.domain.ProductCategoryNews;
+import br.com.hotmart.libs.dto.ProductValueDTO;
 import br.com.hotmart.libs.repository.ProductCategoryNewsRepository;
 import br.com.hotmart.libs.util.DateUtil;
 
@@ -94,6 +99,16 @@ public class ProductCategoryNewsService {
 		log.debug("Criando ProductCategoryNews para categoria id: {} com quantidade de {} noticias.", k, map.get(k));
 
 		return pcn;
+	}
+
+	@Cacheable
+	public Map<Long, BigDecimal> findAmountNewsByIdProduct(List<Long> ids) {
+		Date date = DateUtil.addDate(new Date(), Calendar.DAY_OF_MONTH, 1);
+
+		List<ProductValueDTO> result = productCategoryNewsRepository
+				.findAmountNewsByIdProduct(DateUtil.getDate000000(date), DateUtil.getDate235959(date), ids);
+
+		return result.stream().collect(Collectors.toMap(ProductValueDTO::getIdProduto, ProductValueDTO::getValue));
 	}
 
 }

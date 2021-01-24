@@ -46,4 +46,13 @@ public class DateUtil {
 
 	}
 
+	public static Date addDate(Date date, int field, int amount) {
+		Calendar cal = Calendar.getInstance();
+
+		cal.setTime(date);
+		cal.add(Calendar.MONTH, amount);
+
+		return cal.getTime();
+	}
+
 }

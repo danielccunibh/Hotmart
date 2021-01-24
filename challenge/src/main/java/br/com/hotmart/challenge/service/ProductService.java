@@ -1,9 +1,12 @@
 package br.com.hotmart.challenge.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,12 @@ public class ProductService {
 
 	@Autowired
 	private ProductCategoryRepository productCategoryRepository;
+
+	@Autowired
+	private SaleService saleService;
+
+	@Autowired
+	private ProductCategoryNewsService productCategoryNewsService;
 
 	@Cacheable
 	public List<Product> findAll() {
@@ -114,9 +123,7 @@ public class ProductService {
 		products.get().forEach(p ->
 
 		result.add(ProductDTO.builder().id(p.getId()).name(p.getName()).description(p.getDescription())
-				.creationDate(p.getCreationDate()).score(p.getScore()).build())
-
-		);
+				.creationDate(p.getCreationDate()).score(p.getScore()).build()));
 
 		return result;
 	}
@@ -126,7 +133,43 @@ public class ProductService {
 				.and(Sort.by("productCategory.name")).ascending());
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void updateScoreProduct() {
 
+		List<Product> products = (List<Product>) productRepository.findAll();
+
+		List<Long> ids = products.stream().map(Product::getId).collect(Collectors.toList());
+
+		Map<Long, BigDecimal> productRatingMediaMap = saleService
+				.findProductRatingMediaByIdProductAndLastTwelveMonth(ids);
+
+		Map<Long, BigDecimal> productSalesMediaMap = saleService.findSaleMediaProductByIdProduct(ids);
+
+		Map<Long, BigDecimal> productAmountNewsMap = productCategoryNewsService.findAmountNewsByIdProduct(ids);
+
+		calculateScoreProduct(products, productRatingMediaMap, productSalesMediaMap, productAmountNewsMap);
+
+		productRepository.saveAll(products);
+	}
+
+	private void calculateScoreProduct(List<Product> products, Map<Long, BigDecimal> productRatingMediaMap,
+			Map<Long, BigDecimal> productSalesMediaMap, Map<Long, BigDecimal> productAmountNewsMap) {
+		products.forEach(p -> {
+			BigDecimal value = BigDecimal.ZERO;
+
+			if (productRatingMediaMap.containsKey(p.getId())) {
+				value = value.add(productRatingMediaMap.get(p.getId()));
+			}
+
+			if (productRatingMediaMap.containsKey(p.getId())) {
+				value = value.add(productSalesMediaMap.get(p.getId()));
+			}
+
+			if (productRatingMediaMap.containsKey(p.getId())) {
+				value = value.add(productAmountNewsMap.get(p.getId()));
+			}
+
+			p.setScore(value.doubleValue());
+		});
 	}
 }

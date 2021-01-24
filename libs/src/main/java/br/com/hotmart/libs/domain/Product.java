@@ -49,6 +49,6 @@ public class Product extends AbstractEntityBase {
 	private ProductCategory productCategory;
 
 	@Column(name = "score")
-	private int score = 0;
+	private double score = 0;
 
 }
