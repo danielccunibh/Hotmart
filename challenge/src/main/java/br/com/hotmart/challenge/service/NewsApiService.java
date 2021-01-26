@@ -39,7 +39,7 @@ public class NewsApiService {
 
 	public void updateNewsApi() {
 
-		Map<Long, Integer> map = new HashMap<Long, Integer>();
+		Map<Long, Long> map = new HashMap<Long, Long>();
 
 		List<ProductCategory> productCategories = productCategoryService.findAll();
 
@@ -51,7 +51,7 @@ public class NewsApiService {
 
 	}
 
-	private void fillAmountByProductCategoryMap(Map<Long, Integer> amountByProductCategoryMap,
+	private void fillAmountByProductCategoryMap(Map<Long, Long> amountByProductCategoryMap,
 			List<ProductCategory> productCategories) {
 		try {
 			for (ProductCategory pc : productCategories) {
@@ -65,7 +65,7 @@ public class NewsApiService {
 				log.debug("Quantidade de noticias encontradas para categoria {}: {}", pc.getName(),
 						resp.getTotalResults());
 
-				amountByProductCategoryMap.put(pc.getId(), resp.getTotalResults());
+				amountByProductCategoryMap.put(pc.getId(), resp.getTotalResults().longValue());
 			}
 		} catch (HttpClientErrorException e) {
 			log.error("Quantidade de maxima de requisições diárias ({}/dia) realizadas.", 100);

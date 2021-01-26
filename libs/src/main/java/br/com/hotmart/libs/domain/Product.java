@@ -15,8 +15,11 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.envers.AuditTable;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = false, of = { "id" })
@@ -25,6 +28,9 @@ import lombok.ToString;
 @Table(name = "product")
 @AuditTable(value = "product_audit")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product extends AbstractEntityBase {
 
 	private static final long serialVersionUID = 4353481086450410825L;

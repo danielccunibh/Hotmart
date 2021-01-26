@@ -19,7 +19,7 @@ public interface ProductCategoryNewsRepository extends PagingAndSortingRepositor
 	public List<ProductCategoryNews> findByDateAndProductCategory(@Param(value = "dateInitial") Date dateInitial,
 			@Param(value = "dateEnd") Date dateEnd, @Param(value = "keys") Set<Long> keys);
 
-	@Query("SELECT new br.com.hotmart.libs.dto.ProductValueDTO(p.id, pcn.amount)) FROM ProductCategoryNews pcn INNER JOIN pcn.productCategory pc INNER JOIN  pc.producty p WHERE pcn.dateNews BETWEEN :dateInitial AND :dateEnd AND pc.id in (:ids)")
+	@Query("SELECT new br.com.hotmart.libs.dto.ProductValueDTO(p.id, pcn.amount) FROM ProductCategoryNews pcn INNER JOIN pcn.productCategory pc INNER JOIN  pc.products p WHERE pcn.dateNews BETWEEN :dateInitial AND :dateEnd AND pc.id in (:ids)")
 	@Cacheable
 	public List<ProductValueDTO> findAmountNewsByIdProduct(@Param(value = "dateInitial") Date dateInitial,
 			@Param(value = "dateEnd") Date dateEnd, @Param(value = "ids") List<Long> ids);

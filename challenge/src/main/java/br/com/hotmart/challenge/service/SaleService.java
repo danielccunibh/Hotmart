@@ -28,14 +28,15 @@ public class SaleService {
 
 		Date dateInitial = DateUtil.getDate000000(DateUtil.addDate(new Date(), Calendar.MONTH, -12));
 
-		List<ProductValueDTO> result = saleRepository.findProductRatingMediaByIdProductAndDate(ids, dateInitial, new Date());
+		List<ProductValueDTO> result = saleRepository.findProductRatingMediaByIdProductAndDate(ids, dateInitial,
+				new Date());
 
 		return convertMapByIdProduto(result);
 	}
 
 	@Cacheable
 	public Map<Long, BigDecimal> findSaleMediaProductByIdProduct(List<Long> ids) {
-		List<ProductValueDTO> result = saleRepository.findSaleMediaProductByIdProduct(ids, new Date());
+		List<ProductValueDTO> result = saleRepository.findSaleMediaProductByIdProduct(ids);
 
 		return convertMapByIdProduto(result);
 	}

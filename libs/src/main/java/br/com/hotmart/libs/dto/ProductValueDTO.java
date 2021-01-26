@@ -20,6 +20,11 @@ public class ProductValueDTO implements Serializable {
 
 	private BigDecimal value;
 
+	public ProductValueDTO(Long idProduto, Long value) {
+		this.idProduto = idProduto;
+		this.value = BigDecimal.valueOf(value);
+	}
+
 	public ProductValueDTO(Long idProduto, BigDecimal value) {
 		this.idProduto = idProduto;
 		this.value = value;
@@ -35,6 +40,19 @@ public class ProductValueDTO implements Serializable {
 	public ProductValueDTO(Long idProduto, BigDecimal value, Date createDate) {
 		this.idProduto = idProduto;
 		this.value = value.divide(
+				BigDecimal.valueOf(Days.daysBetween(new DateTime(createDate), new DateTime(new Date())).getDays()));
+	}
+
+	/**
+	 * Construtor utilizado para auxiliar no calculo de media de vendas por dia.
+	 * 
+	 * @param idProduto
+	 * @param value
+	 * @param createDate
+	 */
+	public ProductValueDTO(Long idProduto, Long value, Date createDate) {
+		this.idProduto = idProduto;
+		this.value = BigDecimal.valueOf(value).divide(
 				BigDecimal.valueOf(Days.daysBetween(new DateTime(createDate), new DateTime(new Date())).getDays()));
 	}
 

@@ -44,5 +44,5 @@ public class ProductCategoryNews extends AbstractEntityBase {
 	private ProductCategory productCategory;
 
 	@Column(name = "amount", nullable = false)
-	private Integer amount;
+	private Long amount;
 }

@@ -37,7 +37,7 @@ public class ScheduledTasks {
 	}
 
 	@Scheduled(cron = "0 0 1 * * ?")
-	public void updateProdctCategoryNewsJob2() {
+	public void updateScoreProduct() {
 		startDate = new Date();
 		log.info("Iniciando o calculo de score dos produtos: {}", getDateForLog(startDate));
 

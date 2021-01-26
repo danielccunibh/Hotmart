@@ -31,7 +31,7 @@ public class ProductCategoryNewsService {
 	private ProductCategoryNewsRepository productCategoryNewsRepository;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void updateProductCategoryNews(Map<Long, Integer> map) {
+	public void updateProductCategoryNews(Map<Long, Long> map) {
 		log.debug("Iniciando atualização de ProductCategoryNews");
 
 		Date dateInitial = DateUtil.getDate000000(new Date());
@@ -49,13 +49,13 @@ public class ProductCategoryNewsService {
 		log.debug("Finalizando atualização de ProductCategoryNews");
 	}
 
-	private void updateAllProductCategoryNews(List<ProductCategoryNews> result, Map<Long, Integer> map) {
+	private void updateAllProductCategoryNews(List<ProductCategoryNews> result, Map<Long, Long> map) {
 
 		List<ProductCategoryNews> entitiesForUpdate = new ArrayList<ProductCategoryNews>();
 
 		result.forEach(r -> {
 			if (map.containsKey(r.getId()) && map.get(r.getId()) > r.getAmount()) {
-				Integer amount = r.getAmount() + (map.get(r.getId()) - r.getAmount());
+				Long amount = r.getAmount() + (map.get(r.getId()) - r.getAmount());
 				log.debug("Atualizando quantidade de notícias da categoria de id {} de {} para {}",
 						r.getProductCategory().getId(), r.getAmount(), amount);
 				r.setAmount(amount);
@@ -71,7 +71,7 @@ public class ProductCategoryNewsService {
 		productCategoryNewsRepository.saveAll(entitiesForUpdate);
 	}
 
-	private void saveAll(Map<Long, Integer> map) {
+	private void saveAll(Map<Long, Long> map) {
 		List<ProductCategoryNews> entitiesForSave = new ArrayList<ProductCategoryNews>();
 
 		createProductCategoryNews(map, entitiesForSave);
@@ -81,14 +81,14 @@ public class ProductCategoryNewsService {
 		log.debug("Quantidade total de ProductCategoryNews criadas: {}", entitiesForSave.size());
 	}
 
-	private void createProductCategoryNews(Map<Long, Integer> map, List<ProductCategoryNews> entities) {
+	private void createProductCategoryNews(Map<Long, Long> map, List<ProductCategoryNews> entities) {
 		map.keySet().forEach(k -> {
 			ProductCategoryNews pcn = createProductCategoryNews(map, k);
 			entities.add(pcn);
 		});
 	}
 
-	private ProductCategoryNews createProductCategoryNews(Map<Long, Integer> map, Long k) {
+	private ProductCategoryNews createProductCategoryNews(Map<Long, Long> map, Long k) {
 		ProductCategory pc = new ProductCategory();
 		pc.setId(k);
 		ProductCategoryNews pcn = new ProductCategoryNews();
